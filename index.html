@@ -5,31 +5,36 @@
   <title>Selamat Ulang Tahun, Sayang! 🎉</title>
   <style>
     body {
-      background-color: #ffe4ec;
+      background: linear-gradient(to bottom right, #ffd1dc, #ffe4ec);
       font-family: 'Comic Sans MS', cursive;
       color: #880E4F;
       text-align: center;
       padding: 50px;
       overflow: hidden;
     }
+
     h1 {
       font-size: 3em;
       animation: floatText 3s ease-in-out infinite;
     }
+
     @keyframes floatText {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
     }
+
     .heart {
       position: absolute;
       animation: fall 5s linear infinite;
       color: red;
       font-size: 24px;
     }
+
     @keyframes fall {
       0% { top: -10px; opacity: 1; }
       100% { top: 100%; opacity: 0; }
     }
+
     #message {
       font-size: 1.3em;
       margin-top: 30px;
@@ -38,15 +43,124 @@
       margin-right: auto;
       white-space: pre-wrap;
     }
+
+    /* Slideshow */
+    .slideshow-container {
+      max-width: 600px;
+      position: relative;
+      margin: 50px auto;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(136, 14, 79, 0.3);
+    }
+
+    .slides {
+      display: none;
+    }
+
+    .slides img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+    }
+
+    .prev, .next {
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      width: auto;
+      padding: 16px;
+      color: #880E4F;
+      font-weight: bold;
+      font-size: 24px;
+      transition: 0.3s;
+      user-select: none;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+    }
+
+    .next {
+      right: 10px;
+    }
+
+    .prev {
+      left: 10px;
+    }
+
+    .dot-container {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .dot {
+      cursor: pointer;
+      height: 12px;
+      width: 12px;
+      margin: 0 4px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .active, .dot:hover {
+      background-color: #880E4F;
+    }
+
+    /* Mute Button */
+    #muteBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      background-color: #880E4F;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
   <h1>🎂 Selamat Ulang Tahun, Cintaku! ❤️</h1>
   <div id="message"></div>
-  <audio autoplay loop controls>
+
+  <!-- Audio -->
+    <audio autoplay loop controls>
     <source src="happy-birthday.mp3.mp3" type="audio/mpeg">
     Browser kamu tidak mendukung audio.
-  </audio>
+  </audio>
+
+
+  <!-- Album Foto -->
+  <div class="slideshow-container">
+    <div class="slides">
+      <img src="foto1.jpg" alt="Foto 1">
+    </div>
+    <div class="slides">
+      <img src="foto2.jpg" alt="Foto 2">
+    </div>
+    <div class="slides">
+      <img src="foto3.jpg" alt="Foto 3">
+    </div>
+    <div class="slides">
+      <img src="foto4.jpg" alt="Foto 4">
+    </div>
+    <div class="slides">
+      <img src="foto5.jpg" alt="Foto 5">
+    </div>
+
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+  </div>
+
+  <div class="dot-container">
+    <span class="dot" onclick="currentSlide(1)"></span>
+    <span class="dot" onclick="currentSlide(2)"></span>
+    <span class="dot" onclick="currentSlide(3)"></span>
+    <span class="dot" onclick="currentSlide(4)"></span>
+    <span class="dot" onclick="currentSlide(5)"></span>
+  </div>
+
   <script>
     const text = "Semoga selalu diberi kesehatan, umur panjang, semoga cepet keterima kerja di tempat yang baru, semoga di tahun ini menjadi awal dari kebahagian yang selalu kamu semogakan terwujud dan rezeki kamu untuk mendapatkan pekerjaan yang jauh lebih baik lagi. \nharapan ku ke kamu jadi pribadi yang lebih baik lagi, selalu ceria, sabar terhadap cobaan atau masalah dan tetep jaga ibadahnya terus.\nAku bersyukur memilikimu dalam hidupku 💖\n\nDari aku yang ganteng 😎";
     let i = 0;
@@ -69,6 +183,52 @@
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 5000);
     }, 300);
+
+    // Slide Show
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    function plusSlides(n) {
+      showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+      showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+      let i;
+      const slides = document.getElementsByClassName("slides");
+      const dots = document.getElementsByClassName("dot");
+      if (n > slides.length) { slideIndex = 1 }
+      if (n < 1) { slideIndex = slides.length }
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+      }
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" active", "");
+      }
+      slides[slideIndex - 1].style.display = "block";
+      dots[slideIndex - 1].className += " active";
+    }
+
+    // Auto Slide
+    setInterval(() => {
+      plusSlides(1);
+    }, 5000);
+
+    // Mute Button
+    const bgMusic = document.getElementById("bgMusic");
+    const muteBtn = document.getElementById("muteBtn");
+    muteBtn.addEventListener("click", () => {
+      if (bgMusic.muted) {
+        bgMusic.muted = false;
+        muteBtn.innerText = "🔊 Mute";
+      } else {
+        bgMusic.muted = true;
+        muteBtn.innerText = "🔇 Unmute";
+      }
+    });
   </script>
 </body>
 </html>
